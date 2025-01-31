@@ -6,6 +6,7 @@
 
 local lua_build_system = {}
 local utils = {}
+local str = {}
 
 local Build_Configuration = {}
 Build_Configuration.__index = Build_Configuration
@@ -75,6 +76,36 @@ function utils.default_build(input_file, output)
 
     lua_build_system.build(bconf)
 end
+
+local lfs = require("lfs")
+function str.split(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+        table.insert(t, str)
+    end
+    return t
+end
+
+function len(itable)
+    return table.getn(itable)
+end
+
+function utils.check_arg(index, value)
+    if len(arg) > index then
+        return arg[index]
+    else
+        return value
+    end
+end
+
+function utils.get_target()
+    local target = utils.check_arg(1, "default")
+    return target
+end
+
 
 return {
     lua_build_system = lua_build_system,
